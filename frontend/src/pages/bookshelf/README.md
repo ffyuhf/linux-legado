@@ -20,13 +20,13 @@
 ## 使用方法
 
 ```shell
-pnpm install
+npm install
 #安装项目
-pnpm dev
+npm run dev
 #开发模式
-pnpm build
+npm run build
 #打包
-pnpm lint:fix
+npm run lint:fix
 #格式化代码
 ```
 
