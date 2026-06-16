@@ -15,5 +15,5 @@
 > 需要阅读app提供后端服务
 
 ```bash
-pnpm dev
+npm run dev
 ```
