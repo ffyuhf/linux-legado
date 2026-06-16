@@ -4,6 +4,7 @@
 # 修改历史:
 # 2026-06-16 13:06:04 nmb - 初始版本 (backend/frontend 目标)
 # 2026-06-16 13:06:04 nmb - 追加打包区块 (icon/package-deb/rpm/appimage/package), 方案 B
+# 2026-06-17 codewhale - gradlew 改用 sh 显式调用 (GRADLE 变量), 规避 CI 检出 gradlew 无 +x 导致 Permission denied
 
 # ==================== 目录与端口配置 ====================
 BACKEND_DIR  := backend
@@ -48,41 +49,45 @@ help: ## 显示所有可用目标
 	@echo "提示: 端口/主机可通过环境变量覆盖，例如: make run-jar LEGADO_PORT=8080"
 
 # ==================== 后端目标 (Backend / Kotlin / Ktor) ====================
+# Gradle Wrapper 通过 sh 显式调用, 不依赖文件可执行权限位
+# (CI actions/checkout 检出的 gradlew 可能无 +x, 直接 ./gradlew 会 Permission denied)
+GRADLE := sh ./gradlew
+
 .PHONY: backend-run backend-jar backend-test backend-build backend-clean
 backend-run: ## 启动后端开发服务器 (端口 1122, host 0.0.0.0)
-	cd $(BACKEND_DIR) && ./gradlew run
+	cd $(BACKEND_DIR) && $(GRADLE) run
 
 backend-jar: ## 构建后端 fat-jar (shadowJar -> legado-linux-1.0.0-all.jar)
-	cd $(BACKEND_DIR) && ./gradlew shadowJar
+	cd $(BACKEND_DIR) && $(GRADLE) shadowJar
 
 backend-test: ## 运行后端全部测试 (Ktor test-host 可用)
-	cd $(BACKEND_DIR) && ./gradlew test
+	cd $(BACKEND_DIR) && $(GRADLE) test
 
 backend-build: ## 完整构建后端 (编译 + 测试 + 打包)
-	cd $(BACKEND_DIR) && ./gradlew build
+	cd $(BACKEND_DIR) && $(GRADLE) build
 
 backend-clean: ## 清理后端构建产物 (gradle clean)
-	cd $(BACKEND_DIR) && ./gradlew clean
+	cd $(BACKEND_DIR) && $(GRADLE) clean
 
 # ==================== 前端目标 (Frontend / Vue 3 / Vite) ====================
 .PHONY: frontend-install frontend-dev frontend-build frontend-typecheck frontend-lint frontend-format
-frontend-install: ## 安装前端依赖 (pnpm install)
-	cd $(FRONTEND_DIR) && pnpm install
+frontend-install: ## 安装前端依赖 (npm install)
+	cd $(FRONTEND_DIR) && npm install
 
 frontend-dev: ## 启动前端开发服务器 (端口 8080, 代理到后端)
-	cd $(FRONTEND_DIR) && pnpm dev
+	cd $(FRONTEND_DIR) && npm run dev
 
 frontend-build: ## 构建前端生产包 (type-check + vite build)
-	cd $(FRONTEND_DIR) && pnpm build
+	cd $(FRONTEND_DIR) && npm run build
 
 frontend-typecheck: ## 前端类型检查 (vue-tsc)
-	cd $(FRONTEND_DIR) && pnpm type-check
+	cd $(FRONTEND_DIR) && npm run type-check
 
 frontend-lint: ## 前端代码检查并自动修复 (eslint --fix)
-	cd $(FRONTEND_DIR) && pnpm lint:fix
+	cd $(FRONTEND_DIR) && npm run lint:fix
 
 frontend-format: ## 前端代码格式化 (prettier --write src/)
-	cd $(FRONTEND_DIR) && pnpm format
+	cd $(FRONTEND_DIR) && npm run format
 
 # ==================== 组合目标 ====================
 .PHONY: sync-frontend build run run-jar dev
@@ -104,9 +109,9 @@ run-jar: ## 以生产模式运行已构建的 fat-jar (需先 make build)
 
 dev: ## 同时启动前后端开发服务器 (后台启动前端, 前台运行后端)
 	@echo "==> 后台启动前端开发服务器 (端口 8080)"
-	@cd $(FRONTEND_DIR) && pnpm dev &
+	@cd $(FRONTEND_DIR) && npm run dev &
 	@echo "==> 前台启动后端开发服务器 (端口 $(LEGADO_PORT))"
-	@cd $(BACKEND_DIR) && ./gradlew run
+	@cd $(BACKEND_DIR) && $(GRADLE) run
 
 # ==================== 打包目标 (Package / deb / rpm / AppImage) ====================
 .PHONY: icon package package-deb package-rpm package-appimage
