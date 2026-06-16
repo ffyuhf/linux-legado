@@ -12,23 +12,23 @@
 ## 🎨Project setup
 
 ```
-pnpm i
+npm install
 ```
 
 ### Compiles and hot-reloads for development
 
 ```
-pnpm dev
+npm run dev
 ```
 
 ### Compiles and minifies for production
 
 ```
-pnpm build
+npm run build
 ```
 
 ### Lints and fixes files
 
 ```
-pnpm lint:fix
+npm run lint:fix
 ```
