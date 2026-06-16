@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Legado Linux 应用图标 - 打开的书 (墨绿主题)
+  创建日期: 2026-06-16
+  说明: 用于 deb/rpm/AppImage 打包的源图标; 构建时由 Makefile 转换为 512x512 PNG
+  修改历史:
+  2026-06-16 13:06:04 nmb - 初始版本
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#43A047"/>
+      <stop offset="100%" stop-color="#2E7D32"/>
+    </linearGradient>
+  </defs>
+  <!-- 圆角背景 -->
+  <rect width="256" height="256" rx="52" fill="url(#bg)"/>
+  <!-- 打开的书: 左页 -->
+  <path d="M128 80 C108 72 80 72 60 80 L60 176 C80 168 108 168 128 176 Z" fill="#FFFFFF"/>
+  <!-- 打开的书: 右页 -->
+  <path d="M128 80 C148 72 176 72 196 80 L196 176 C176 168 148 168 128 176 Z" fill="#FFFFFF"/>
+  <!-- 书脊 -->
+  <line x1="128" y1="80" x2="128" y2="176" stroke="#2E7D32" stroke-width="3"/>
+  <!-- 文字行 (左页) -->
+  <g stroke="#2E7D32" stroke-width="3" stroke-linecap="round">
+    <line x1="74" y1="100" x2="118" y2="95"/>
+    <line x1="74" y1="120" x2="118" y2="115"/>
+    <line x1="74" y1="140" x2="110" y2="136"/>
+    <!-- 文字行 (右页) -->
+    <line x1="138" y1="95" x2="182" y2="100"/>
+    <line x1="138" y1="115" x2="182" y2="120"/>
+    <line x1="146" y1="136" x2="182" y2="140"/>
+  </g>
+</svg>

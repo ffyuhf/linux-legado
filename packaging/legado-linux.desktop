@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Legado Linux
+GenericName=小说阅读器
+Comment=Legado 阅读 Linux 桌面版
+Comment[zh_CN]=Legado 阅读 Linux 桌面版
+Exec=legado-linux
+Icon=legado-linux
+Terminal=false
+Categories=Office;Literature;Network;
+StartupNotify=true
+Keywords=novel;book;reader;legado;阅读;小说;
