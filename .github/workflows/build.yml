@@ -52,10 +52,17 @@ jobs:
 
       - name: Install appimagetool
         run: |
+          # appimagetool 本身是 AppImage, 启动时需 dlopen libfuse.so.2;
+          # ubuntu-22.04 runner 默认未预装 libfuse2, 缺失会让打包报
+          # "dlopen(): error loading libfuse.so.2" 而失败。
+          sudo apt-get install -y libfuse2
           sudo install -d /usr/local/bin
           sudo curl -fsSL -o /usr/local/bin/appimagetool \
             https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
           sudo chmod +x /usr/local/bin/appimagetool
+          # fail-fast: 确认 appimagetool 能加载 libfuse 正常运行,
+          # 否则错误会推迟到打包阶段才以隐晦的 dlopen 形式暴露
+          appimagetool --version
 
       - name: Install frontend deps
         # 项目统一使用 npm（package-lock.json），CI 用 npm ci 复用锁文件；
