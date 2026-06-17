@@ -5,6 +5,7 @@
  *
  * 修改历史:
  * 2026-06-13 12:00 nmb - 初始版本
+ * 2026-06-17 codewhale - Shadow 插件升至主线 9.4.2 (兼容 Gradle 9, 修复 mainClassName 映射错误)
  */
 
 plugins {
@@ -13,7 +14,7 @@ plugins {
     // Application 插件：支持 run 任务和 distTar/distZip 打包
     application
     // Shadow 插件：生成 fat-jar（包含所有依赖的可运行 jar）
-    id("com.gradleup.shadow") version "8.3.6"
+    id("com.gradleup.shadow") version "9.4.2"
 }
 
 group = "io.legado"
